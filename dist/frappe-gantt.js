@@ -1319,13 +1319,38 @@ class Gantt {
     make_grid_header() {
         const header_width = this.dates.length * this.options.column_width;
         const header_height = this.options.header_height + 10;
-        createSVG('rect', {
+        let gridHeader = createSVG('rect', {
             x: 0,
             y: 0,
             width: header_width,
             height: header_height,
             class: 'grid-header',
             append_to: this.layers.grid
+        });
+
+        let scrollLeft = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        gridHeader.addEventListener('mousedown', e => {
+            console.log('Grid Header mouse down');
+            isDragging = true;
+
+            startX = e.x;
+            startY = e.y;
+            scrollLeft = this.$container.scrollLeft;
+        });
+        gridHeader.addEventListener('mousemove', e => {
+            if (isDragging) {
+                let offset = e.x - startX;
+                this.$container.scroll({
+                    left: scrollLeft - offset
+                });
+            }
+        });
+        document.addEventListener('mouseup', e => {
+            isDragging = false;
+            console.log('Grid Header mouse up');
         });
     }
 

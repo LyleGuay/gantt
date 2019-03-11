@@ -24,6 +24,8 @@
 	<div class="container">
 		<h2>Interactive Gantt Chart entirely made in SVG!</h2>
 		<div class="gantt-target"></div>
+
+		<button onclick="addTask()">Add</button>
 	</div>
 	<script>
 		var tasks = [
@@ -74,13 +76,6 @@
 				progress: 0,
 				dependencies: 'Task 4',
 				custom_class: 'bar-milestone'
-			},
-			{
-				start: '2014-01-05',
-				end: '2019-10-12',
-				name: 'Long term task',
-				id: "Task 6",
-				progress: 0
 			}
 		]
 		var gantt_chart = new Gantt(".gantt-target", tasks, {
@@ -96,9 +91,21 @@
 			on_view_change: function(mode) {
 				console.log(mode);
 			},
-			view_mode: 'Month',
-			language: 'en'
+			view_mode: 'Quarter Day',
+			language: 'en',
+			column_width: 2,
+			step: 2
 		});
+		function addTask() {
+			tasks.push({
+				start: '2018-10-05',
+				end: '2018-10-06',
+				name: 'New Task',
+				id: "Task " + Math.random(),
+				progress: 0
+			});
+			gantt_chart.refresh([...tasks]);
+		}
 		console.log(gantt_chart);
 	</script>
 </body>
