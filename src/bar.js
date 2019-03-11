@@ -370,12 +370,14 @@ export default class Bar {
         const bar = this.$bar,
             label = this.group.querySelector('.bar-label');
 
-        if (label.getBBox().width > bar.getWidth()) {
-            label.classList.add('big');
-            label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
-        } else {
-            label.classList.remove('big');
-            label.setAttribute('x', bar.getX() + bar.getWidth() / 2);
+        if (bar != null && label != null) {
+            if (label.getBBox().width > bar.getWidth()) {
+                label.classList.add('big');
+                label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
+            } else {
+                label.classList.remove('big');
+                label.setAttribute('x', bar.getX() + bar.getWidth() / 2);
+            }
         }
     }
 
