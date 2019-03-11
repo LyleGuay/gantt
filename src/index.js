@@ -753,6 +753,9 @@ export default class Gantt {
             is_dragging = false;
             is_resizing_left = false;
             is_resizing_right = false;
+
+            bars = [];
+            this.bar_being_dragged = null;
         });
 
         $.on(this.$svg, 'mouseup', e => {
@@ -760,6 +763,7 @@ export default class Gantt {
             bars.forEach(bar => {
                 const $bar = bar.$bar;
                 if (!$bar.finaldx) return;
+                console.log('Schedule');
                 bar.date_changed();
                 bar.set_action_completed();
             });
