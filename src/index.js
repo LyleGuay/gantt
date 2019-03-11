@@ -668,8 +668,8 @@ export default class Gantt {
 
             bar_wrapper.classList.add('active');
 
-            x_on_start = e.offsetX;
-            y_on_start = e.offsetY;
+            x_on_start = e.x;
+            y_on_start = e.y;
 
             parent_bar_id = bar_wrapper.getAttribute('data-id');
             const ids = [
@@ -691,8 +691,8 @@ export default class Gantt {
 
         $.on(this.$svg, 'mousemove', e => {
             if (!action_in_progress()) return;
-            const dx = e.offsetX - x_on_start;
-            const dy = e.offsetY - y_on_start;
+            const dx = e.x - x_on_start;
+            const dy = e.y - y_on_start;
 
             bars.forEach(bar => {
                 const $bar = bar.$bar;
