@@ -370,7 +370,12 @@ export default class Bar {
         const bar = this.$bar,
             label = this.group.querySelector('.bar-label');
 
-        if (bar != null && label != null) {
+        if (
+            bar != null &&
+            label != null &&
+            document.contains(label) &&
+            document.contains(bar)
+        ) {
             if (label.getBBox().width > bar.getWidth()) {
                 label.classList.add('big');
                 label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
