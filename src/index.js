@@ -366,12 +366,12 @@ export default class Gantt {
             append_to: this.layers.grid
         });
 
+        // Setup events to allow dragging the header to move x-axis scrolling.
         let scrollLeft = 0;
         let isDragging = false;
         let startX = 0;
         let startY = 0;
         gridHeader.addEventListener('mousedown', e => {
-            console.log('Grid Header mouse down');
             isDragging = true;
 
             startX = e.x;
@@ -388,7 +388,6 @@ export default class Gantt {
         });
         document.addEventListener('mouseup', e => {
             isDragging = false;
-            console.log('Grid Header mouse up');
         });
     }
 

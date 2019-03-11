@@ -774,6 +774,8 @@ class Bar {
         const bar = this.$bar,
             label = this.group.querySelector('.bar-label');
 
+        // Null checks because this function is called in requrestAnimationFrame().
+        // This can create issues due to timing.
         if (
             bar != null &&
             label != null &&
@@ -1335,12 +1337,12 @@ class Gantt {
             append_to: this.layers.grid
         });
 
+        // Setup events to allow dragging the header to move x-axis scrolling.
         let scrollLeft = 0;
         let isDragging = false;
         let startX = 0;
         let startY = 0;
         gridHeader.addEventListener('mousedown', e => {
-            console.log('Grid Header mouse down');
             isDragging = true;
 
             startX = e.x;
@@ -1357,7 +1359,6 @@ class Gantt {
         });
         document.addEventListener('mouseup', e => {
             isDragging = false;
-            console.log('Grid Header mouse up');
         });
     }
 

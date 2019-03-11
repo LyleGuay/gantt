@@ -370,6 +370,8 @@ export default class Bar {
         const bar = this.$bar,
             label = this.group.querySelector('.bar-label');
 
+        // Null checks because this function is called in requrestAnimationFrame().
+        // This can create issues due to timing.
         if (
             bar != null &&
             label != null &&
