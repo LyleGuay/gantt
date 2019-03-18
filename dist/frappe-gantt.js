@@ -618,20 +618,20 @@ class Bar {
         const bar = this.$bar;
         if (x) {
             // get all x values of parent task
-            const xs = this.task.dependencies.map(dep => {
-                return this.gantt.get_bar(dep).$bar.getX();
-            });
-            // child task must not go before parent
-            const valid_x = xs.reduce((prev, curr) => {
-                return x >= curr;
-            }, x);
-            if (!valid_x) {
-                width = null;
-                return;
-            }
+            // const xs = this.task.dependencies.map(dep => {
+            //     return this.gantt.get_bar(dep).$bar.getX();
+            // });
+            // // child task must not go before parent
+            // const valid_x = xs.reduce((prev, curr) => {
+            //     return x >= curr;
+            // }, x);
+            // if (!valid_x) {
+            //     width = null;
+            //     return;
+            // }
             this.update_attr(bar, 'x', x);
         }
-        if (width && width >= this.gantt.options.column_width) {
+        if (width) {
             this.update_attr(bar, 'width', width);
         }
         this.update_label_position();
@@ -640,7 +640,7 @@ class Bar {
         this.update_arrow_position();
     }
 
-    date_changed() {
+    date_changed(eventType) {
         let changed = false;
         const { new_start_date, new_end_date } = this.compute_start_end_date();
 
@@ -658,6 +658,7 @@ class Bar {
 
         this.gantt.trigger_event('date_change', [
             this.task,
+            eventType,
             new_start_date,
             date_utils.add(new_end_date, -1, 'second')
         ]);
@@ -1702,10 +1703,6 @@ class Gantt {
                             x: $bar.ox + $bar.finaldx,
                             width: $bar.owidth - $bar.finaldx
                         });
-                    } else {
-                        bar.update_bar_position({
-                            x: $bar.ox + $bar.finaldx
-                        });
                     }
                 } else if (is_resizing_right) {
                     if (parent_bar_id === bar.task.id) {
@@ -1733,11 +1730,23 @@ class Gantt {
         });
 
         $.on(this.$svg, 'mouseup', e => {
+            let eventType = '';
+
+            if (is_dragging) {
+                eventType = 'MOVE';
+            } else {
+                eventType = 'RESIZE';
+            }
+
+            is_dragging = false;
+            is_resizing_left = false;
+            is_resizing_right = false;
+
             this.bar_being_dragged = null;
             bars.forEach(bar => {
                 const $bar = bar.$bar;
                 if (!$bar.finaldx) return;
-                bar.date_changed();
+                bar.date_changed(eventType);
                 bar.set_action_completed();
             });
         });

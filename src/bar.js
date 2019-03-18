@@ -214,20 +214,20 @@ export default class Bar {
         const bar = this.$bar;
         if (x) {
             // get all x values of parent task
-            const xs = this.task.dependencies.map(dep => {
-                return this.gantt.get_bar(dep).$bar.getX();
-            });
-            // child task must not go before parent
-            const valid_x = xs.reduce((prev, curr) => {
-                return x >= curr;
-            }, x);
-            if (!valid_x) {
-                width = null;
-                return;
-            }
+            // const xs = this.task.dependencies.map(dep => {
+            //     return this.gantt.get_bar(dep).$bar.getX();
+            // });
+            // // child task must not go before parent
+            // const valid_x = xs.reduce((prev, curr) => {
+            //     return x >= curr;
+            // }, x);
+            // if (!valid_x) {
+            //     width = null;
+            //     return;
+            // }
             this.update_attr(bar, 'x', x);
         }
-        if (width && width >= this.gantt.options.column_width) {
+        if (width) {
             this.update_attr(bar, 'width', width);
         }
         this.update_label_position();
@@ -236,7 +236,7 @@ export default class Bar {
         this.update_arrow_position();
     }
 
-    date_changed() {
+    date_changed(eventType) {
         let changed = false;
         const { new_start_date, new_end_date } = this.compute_start_end_date();
 
@@ -254,6 +254,7 @@ export default class Bar {
 
         this.gantt.trigger_event('date_change', [
             this.task,
+            eventType,
             new_start_date,
             date_utils.add(new_end_date, -1, 'second')
         ]);

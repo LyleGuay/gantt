@@ -731,10 +731,6 @@ export default class Gantt {
                             x: $bar.ox + $bar.finaldx,
                             width: $bar.owidth - $bar.finaldx
                         });
-                    } else {
-                        bar.update_bar_position({
-                            x: $bar.ox + $bar.finaldx
-                        });
                     }
                 } else if (is_resizing_right) {
                     if (parent_bar_id === bar.task.id) {
@@ -762,11 +758,23 @@ export default class Gantt {
         });
 
         $.on(this.$svg, 'mouseup', e => {
+            let eventType = '';
+
+            if (is_dragging) {
+                eventType = 'MOVE';
+            } else {
+                eventType = 'RESIZE';
+            }
+
+            is_dragging = false;
+            is_resizing_left = false;
+            is_resizing_right = false;
+
             this.bar_being_dragged = null;
             bars.forEach(bar => {
                 const $bar = bar.$bar;
                 if (!$bar.finaldx) return;
-                bar.date_changed();
+                bar.date_changed(eventType);
                 bar.set_action_completed();
             });
         });
