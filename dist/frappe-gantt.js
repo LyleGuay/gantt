@@ -1047,6 +1047,7 @@ class Gantt {
                 'Month',
                 'Year'
             ],
+            step_multiplier: 1,
             bar_height: 20,
             bar_corner_radius: 3,
             arrow_curve: 5,
@@ -1170,6 +1171,8 @@ class Gantt {
             this.options.step = 24 * 365;
             this.options.column_width = 120;
         }
+
+        this.options.step *= this.options.step_multiplier;
     }
 
     setup_dates() {
@@ -1734,7 +1737,6 @@ class Gantt {
             bars.forEach(bar => {
                 const $bar = bar.$bar;
                 if (!$bar.finaldx) return;
-                console.log('Schedule');
                 bar.date_changed();
                 bar.set_action_completed();
             });
